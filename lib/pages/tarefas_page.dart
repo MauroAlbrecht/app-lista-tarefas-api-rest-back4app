@@ -13,7 +13,8 @@ class _TarefasPageState extends State<TarefasPage> {
 
   var descricaoController = TextEditingController();
   var _tarefas = TarefasModel([]);
-  var naoConcluido = false;
+  var naoConcluidas = false;
+  var loading = false;
 
   @override
   void initState() {
@@ -72,14 +73,15 @@ class _TarefasPageState extends State<TarefasPage> {
                   style: TextStyle(fontSize: 18),
                 ),
                 Switch(
-                    value: naoConcluido,
+                    value: naoConcluidas,
                     onChanged: (bool val) async {
-                      naoConcluido = val;
+                      naoConcluidas = val;
                       await carregaTarefas();
                       setState(() {});
                     })
               ],
             ),
+            loading ? const CircularProgressIndicator() :
             Expanded(
               child: ListView.builder(
                   itemCount: _tarefas.tarefas.length,
@@ -111,7 +113,12 @@ class _TarefasPageState extends State<TarefasPage> {
   }
 
   Future<void> carregaTarefas() async {
-    _tarefas = await tarefaRepository.getAll();
-    setState(() {});
+   setState(() {
+     loading = true;
+   });
+    _tarefas = await tarefaRepository.getAll(naoConcluidas);
+   setState(() {
+     loading = false;
+   });
   }
 }
