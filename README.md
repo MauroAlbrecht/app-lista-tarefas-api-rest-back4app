@@ -1,16 +1,7 @@
-# app_tarefas_back4app
+# Aplicativo de Lista de Tarefas
 
-A new Flutter project.
+Esse app utiliza como servidor o Back4app que é servidor REST gratuito.
+No app é possível criar, alterar e excluir tarefas.
 
-## Getting Started
+![alt text](images_readme/Screenshot_1696516400.png)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
