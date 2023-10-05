@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../models/tarefa_model.dart';
@@ -10,7 +9,7 @@ class TarefasPage extends StatefulWidget {
 }
 
 class _TarefasPageState extends State<TarefasPage> {
-  late TarefasRepository tarefaRepository;
+  var tarefaRepository = TarefasRepository();
 
   var descricaoController = TextEditingController();
   var _tarefas = TarefasModel([]);
@@ -25,7 +24,10 @@ class _TarefasPageState extends State<TarefasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Lista Tarefas - Back4App'),),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Lista Tarefas - Back4App'),
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -47,7 +49,7 @@ class _TarefasPageState extends State<TarefasPage> {
                         child: const Text('Cancelar')),
                     TextButton(
                         onPressed: () {
-                         // tarefaRepository.salvar(TarefaHiveModel.criar(descricaoController.text, false));
+                          // tarefaRepository.salvar(TarefaHiveModel.criar(descricaoController.text, false));
                           carregaTarefas();
                           setState(() {});
                           Navigator.pop(context);
