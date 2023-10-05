@@ -49,11 +49,11 @@ class _TarefasPageState extends State<TarefasPage> {
                         },
                         child: const Text('Cancelar')),
                     TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             loading = true;
                           });
-                          tarefaRepository.criar(TarefaModel.criar(descricaoController.text, false));
+                          await tarefaRepository.criar(TarefaModel.criar(descricaoController.text, false));
                           carregaTarefas();
                           setState(() {});
                           Navigator.pop(context);
