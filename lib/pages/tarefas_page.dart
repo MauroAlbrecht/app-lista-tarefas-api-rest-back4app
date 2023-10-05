@@ -50,7 +50,10 @@ class _TarefasPageState extends State<TarefasPage> {
                         child: const Text('Cancelar')),
                     TextButton(
                         onPressed: () {
-                          // tarefaRepository.salvar(TarefaHiveModel.criar(descricaoController.text, false));
+                          setState(() {
+                            loading = true;
+                          });
+                          tarefaRepository.criar(TarefaModel.criar(descricaoController.text, false));
                           carregaTarefas();
                           setState(() {});
                           Navigator.pop(context);
@@ -81,31 +84,32 @@ class _TarefasPageState extends State<TarefasPage> {
                     })
               ],
             ),
-            loading ? const CircularProgressIndicator() :
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _tarefas.tarefas.length,
-                  itemBuilder: (BuildContext bc, int index) {
-                    return Dismissible(
-                      key: Key(_tarefas.tarefas[index].descricao),
-                      child: ListTile(
-                        title: Text(_tarefas.tarefas[index].descricao),
-                        trailing: Switch(
-                          onChanged: (bool val) {
-                            _tarefas.tarefas[index].concluido = val;
-                            //tarefaRepository.alterar(_tarefas.tarefas[index]);
-                            setState(() {});
-                          },
-                          value: _tarefas.tarefas[index].concluido,
-                        ),
-                      ),
-                      onDismissed: (DismissDirection dis) {
-                        //tarefaRepository.excluir(_tarefas[index]);
-                        carregaTarefas();
-                      },
-                    );
-                  }),
-            ),
+            loading
+                ? const CircularProgressIndicator()
+                : Expanded(
+                    child: ListView.builder(
+                        itemCount: _tarefas.tarefas.length,
+                        itemBuilder: (BuildContext bc, int index) {
+                          return Dismissible(
+                            key: Key(_tarefas.tarefas[index].descricao),
+                            child: ListTile(
+                              title: Text(_tarefas.tarefas[index].descricao),
+                              trailing: Switch(
+                                onChanged: (bool val) async {
+                                  _tarefas.tarefas[index].concluido = val;
+                                  await tarefaRepository.atualizar(_tarefas.tarefas[index]);
+                                  setState(() {});
+                                },
+                                value: _tarefas.tarefas[index].concluido,
+                              ),
+                            ),
+                            onDismissed: (DismissDirection dis) {
+                               tarefaRepository.remover(_tarefas.tarefas[index]);
+                              carregaTarefas();
+                            },
+                          );
+                        }),
+                  ),
           ],
         ),
       ),
@@ -113,12 +117,12 @@ class _TarefasPageState extends State<TarefasPage> {
   }
 
   Future<void> carregaTarefas() async {
-   setState(() {
-     loading = true;
-   });
+    setState(() {
+      loading = true;
+    });
     _tarefas = await tarefaRepository.getAll(naoConcluidas);
-   setState(() {
-     loading = false;
-   });
+    setState(() {
+      loading = false;
+    });
   }
 }
